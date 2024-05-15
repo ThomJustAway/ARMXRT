@@ -74,5 +74,17 @@ namespace Assets.Scripts
         {
             touchControl.Disable();
         }
+
+        public void Toggle()
+        {
+            if(enabled)
+            {
+                enabled = false;
+            }
+            else
+            {
+                enabled = true;
+            }
+        }
     }
 }
