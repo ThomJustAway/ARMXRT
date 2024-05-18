@@ -4,7 +4,7 @@ namespace UnityEngine.XR.ARFoundation.Samples
 {
     [CreateAssetMenu(menuName = "XR/AR Foundation/Input Action References")]
     public class InputActionReferences : ScriptableObject
-    {
+    { 
         [SerializeField]
         InputActionProperty m_ScreenTap;
 

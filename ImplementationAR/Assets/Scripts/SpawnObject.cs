@@ -12,79 +12,65 @@ namespace Assets.Scripts
     [RequireComponent(typeof(ARRaycastManager))]
     public class SpawnObject : MonoBehaviour
     {
-        public ARRaycastManager raycastManager;
-        private GameObject spawnObject;
+        const float k_PrefabHalfSize = 0.025f;
 
-        public GameObject placeableObject;
+        [SerializeField]
+        [Tooltip("The prefab to be placed or moved.")]
+        GameObject m_PrefabToPlace;
 
-        static List<ARRaycastHit> hits = new List<ARRaycastHit>();
-        private Mobileactions touchControl;
-        private void Awake()
+        [SerializeField]
+        [Tooltip("The Scriptable Object Asset that contains the ARRaycastHit event.")]
+        ArHitEvent m_RaycastHitEvent;
+
+        GameObject m_SpawnedObject;
+
+        /// <summary>
+        /// The prefab to be placed or moved.
+        /// </summary>
+        public GameObject prefabToPlace
         {
-            raycastManager = GetComponent<ARRaycastManager>();
-            touchControl = new Mobileactions();
+            get => m_PrefabToPlace;
+            set => m_PrefabToPlace = value;
         }
 
-        private void Start()
+        /// <summary>
+        /// The spawned prefab instance.
+        /// </summary>
+        public GameObject spawnedObject
         {
-            
+            get => m_SpawnedObject;
+            set => m_SpawnedObject = value;
         }
 
-        bool TryGetTouchPosition(out Vector2 touchpos)
+        void OnEnable()
         {
-            if (touchControl.Touch.TouchPress.IsPressed())
+            if (m_RaycastHitEvent == null || m_PrefabToPlace == null)
             {
-                touchpos = touchControl.Touch.TouchPosition.ReadValue<Vector2>();
-                return true;
-            }
-
-            touchpos = default(Vector2);
-            return false;
-        }
-
-        private void Update()
-        {
-            print($"Has press {touchControl.Touch.TouchPress.IsPressed()}");
-            print($"Has press {touchControl.Touch.TouchPosition.ReadValue<Vector2>()}");
-            if (!TryGetTouchPosition(out var touchpos))
-            {
+                Debug.LogWarning($"{nameof(spawnedObject)} component on {name} has null inputs and will have no effect in this scene.", this);
                 return;
             }
 
-            if(raycastManager.Raycast(touchpos, hits , TrackableType.PlaneWithinPolygon))
-            {
-                var hitPos = hits[0].pose;
-                if(spawnObject == null)
-                {
-                    spawnObject = Instantiate(placeableObject, hitPos.position, hitPos.rotation);
-                }
-                else
-                {
-                    spawnObject.transform.position = hitPos.position;
-                    spawnObject.transform.rotation = hitPos.rotation;
-                }
-            }
+            if (m_RaycastHitEvent != null)
+                m_RaycastHitEvent.eventRaised += PlaceObjectAt;
         }
 
-        private void OnEnable()
+        void OnDisable()
         {
-            touchControl.Enable();
-        }
-        private void OnDisable()
-        {
-            touchControl.Disable();
+            if (m_RaycastHitEvent != null)
+                m_RaycastHitEvent.eventRaised -= PlaceObjectAt;
         }
 
-        public void Toggle()
+        void PlaceObjectAt(object sender, ARRaycastHit hitPose)
         {
-            if(enabled)
+            if (m_SpawnedObject == null)
             {
-                enabled = false;
+                m_SpawnedObject = Instantiate(m_PrefabToPlace, hitPose.trackable.transform.parent);
             }
-            else
-            {
-                enabled = true;
-            }
+
+            var forward = hitPose.pose.rotation * Vector3.up;
+            var offset = forward * k_PrefabHalfSize;
+            m_SpawnedObject.transform.position = hitPose.pose.position + offset;
+            m_SpawnedObject.transform.parent = hitPose.trackable.transform.parent;
         }
     }
 }
