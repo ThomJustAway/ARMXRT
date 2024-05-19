@@ -8,7 +8,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject lockinButton;
     [SerializeField]GameObject PlacingPanel;
     [SerializeField]GameObject RotationNScalePanel;
-
+    [SerializeField] GameObject GamePlayPanel;
     private void OnEnable()
     {
         EventManager.Instance.AddListener(EventName.BeginPlacing, OnBeginPlacing);
@@ -33,17 +33,21 @@ public class UIManager : MonoBehaviour
         PlacingPanel.SetActive(true);
         RotationNScalePanel.SetActive(false);
         lockinButton.SetActive(false);
+        GamePlayPanel.SetActive(false);
+
     }
 
     void OnBeginAdjustingARScene()
     {
         PlacingPanel.SetActive(false);
         RotationNScalePanel.SetActive(true);
+        GamePlayPanel.SetActive(false);
     }
 
     void OnStartGame()
     {
         PlacingPanel.SetActive(false);
         RotationNScalePanel.SetActive(false);
+        GamePlayPanel.SetActive(true);
     }
 }

@@ -6,5 +6,6 @@ namespace Assets.Scripts.Manager
     public enum SFXClip
     {//make sure to only add linearly and dont add anything in between to mess up the thing
         ButtonClick,
+        ReturnButtonClick,
     }
 }

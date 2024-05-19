@@ -1,11 +1,16 @@
 ﻿using Patterns;
 using System.Collections;
 using Unity.VisualScripting;
+using UnityEngine;
 
 namespace Assets.Scripts
 {
     public class GameManager : Patterns.Singleton<GameManager>
     {
+        [SerializeField] private int amountOfTime = 180;
+
+        public int AmountOfTime { get => amountOfTime; set => amountOfTime = value; }
+
         private void Start()
         {
             StartPlacing();

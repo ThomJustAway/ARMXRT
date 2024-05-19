@@ -10,7 +10,7 @@ namespace Assets.Scripts.UI_Related
     public class CustomButton : MonoBehaviour, IPointerDownHandler
     {
         [SerializeField] private SFXClip clipToPlayWhenClick;
-        [SerializeField] private float delayInSeconds;
+        [SerializeField] private float delayInSeconds = 0.1f;
         public UnityEvent actions;
 
         //this is special case for the button for the connecting button.
