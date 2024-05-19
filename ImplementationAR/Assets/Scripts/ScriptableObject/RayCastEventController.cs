@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using Patterns;
+using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using Unity.XR.CoreUtils;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -29,9 +31,13 @@ namespace Assets.Scripts.ScriptableObject
         ArHitEvent m_ARRaycastHitEvent;
 
         [SerializeField]
+        Camera m_Camera;
+
+        [SerializeField]
         [Tooltip("The type of trackable the raycast will hit.")]
         TrackableType m_TrackableType = TrackableType.PlaneWithinPolygon;
-        private bool canRecord = true;
+        public bool canRayCastAR = true;
+        public bool canRayCastScene = true;
 
         public InputManager inputActions => m_InputActionReferences;
 
@@ -57,6 +63,10 @@ namespace Assets.Scripts.ScriptableObject
 
             if (m_InputActionReferences.ScreenTap.action != null)
                 m_InputActionReferences.ScreenTap.action.performed += ScreenTapped;
+
+            EventManager.Instance.AddListener(EventName.BeginPlacing, BeginPlacing);
+            EventManager.Instance.AddListener(EventName.BeginAdjustingARScene, BeginAdjusting);
+            EventManager.Instance.AddListener(EventName.StartGame, StartGame);
         }
 
         void OnDisable()
@@ -67,29 +77,64 @@ namespace Assets.Scripts.ScriptableObject
             if (m_InputActionReferences.ScreenTap.action != null)
                 m_InputActionReferences.ScreenTap.action.performed -= ScreenTapped;
 
+
+            EventManager.Instance.RemoveListener(EventName.BeginPlacing, BeginPlacing);
+            EventManager.Instance.RemoveListener(EventName.BeginAdjustingARScene, BeginAdjusting);
+            EventManager.Instance.RemoveListener(EventName.StartGame, StartGame);
         }
 
         void ScreenTapped(InputAction.CallbackContext context)
         {
-            if (!canRecord) return;
             if (context.control.device is not Pointer pointer)
             {
                 Debug.LogError("Input actions are incorrectly configured. Expected a Pointer binding ScreenTapped.", this);
                 return;
             }
-
             var tapPosition = pointer.position.ReadValue();
 
-            if (m_ARRaycastHitEvent != null &&
-                m_RaycastManager.Raycast(tapPosition, s_Hits, m_TrackableType))
+            RayCastScene(tapPosition);
+            RaycastAR(tapPosition);
+
+            void RaycastAR(Vector2 tapPosition)
             {
-                m_ARRaycastHitEvent.Raise(s_Hits[0]);
+                if (!canRayCastAR) return;
+                if (m_ARRaycastHitEvent != null &&
+                    m_RaycastManager.Raycast(tapPosition, s_Hits, m_TrackableType))
+                {
+                    m_ARRaycastHitEvent.Raise(s_Hits[0]);
+                }
+            }
+            void RayCastScene(Vector2 tapPosition)
+            {
+                if (!canRayCastScene) return;
+                Ray raycast = m_Camera.ScreenPointToRay(tapPosition);
+                RaycastHit raycastHit;
+                if (Physics.Raycast(raycast, out raycastHit))
+                {
+                    if (raycastHit.collider.gameObject.TryGetComponent<IHittable>(out var component))
+                    {
+                        component.OnHit();
+                    }
+                }
             }
         }
 
-        public void ToggleRecord()
+        void BeginPlacing()
         {
-            canRecord = !canRecord;
+            canRayCastAR = true;
+            canRayCastScene = false;
+        }
+
+        void BeginAdjusting()
+        {
+            canRayCastAR = false;
+            canRayCastScene = false;
+
+        }
+        void StartGame()
+        {
+            canRayCastAR = false;
+            canRayCastScene = true;
         }
 
         /// <summary>
