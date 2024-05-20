@@ -30,5 +30,20 @@ namespace Assets.Scripts
         {
             EventManager.Instance.TriggerEvent(EventName.StartGame);
         }
+
+        public void RestartGame()
+        {
+            EventManager.Instance.TriggerEvent(EventName.RestartGame);
+        }
+        [ContextMenu("Win Game")]
+        public void WinGame()
+        {
+            EventManager.Instance.TriggerEvent(EventName.WinGame);
+        }
+        [ContextMenu("Lose Game")]
+        public void LoseGame()
+        {
+            EventManager.Instance.TriggerEvent(EventName.LoseGame);
+        }
     }
 }

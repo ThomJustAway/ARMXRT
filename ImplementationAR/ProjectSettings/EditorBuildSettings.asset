@@ -6,7 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/ExperimentScene.unity
+    path: Assets/Scenes/Build scene/Starting Scene.unity
+    guid: 334ffa24d1f1af44c9c5541464b78b54
+  - enabled: 1
+    path: Assets/Scenes/Build scene/GamePage.unity
     guid: 29bdefcda4d4afd4f8cc2902007cf482
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 6ee72d15cf39dd748a13eac57397b9af,

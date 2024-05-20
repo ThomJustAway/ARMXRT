@@ -236,7 +236,9 @@ namespace Patterns
         FinishPlacing,
         BeginAdjustingARScene,
         StartGame,
-        RestartGame
+        RestartGame,
+        WinGame,
+        LoseGame,
     }
 }
 

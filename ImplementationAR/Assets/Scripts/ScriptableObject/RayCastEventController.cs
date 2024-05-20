@@ -67,6 +67,9 @@ namespace Assets.Scripts.ScriptableObject
             EventManager.Instance.AddListener(EventName.BeginPlacing, BeginPlacing);
             EventManager.Instance.AddListener(EventName.BeginAdjustingARScene, BeginAdjusting);
             EventManager.Instance.AddListener(EventName.StartGame, StartGame);
+            EventManager.Instance.AddListener(EventName.RestartGame, BeginPlacing);
+            EventManager.Instance.AddListener(EventName.WinGame, StopRayCasting);
+            EventManager.Instance.AddListener(EventName.LoseGame, StopRayCasting);
         }
 
         void OnDisable()
@@ -81,6 +84,9 @@ namespace Assets.Scripts.ScriptableObject
             EventManager.Instance.RemoveListener(EventName.BeginPlacing, BeginPlacing);
             EventManager.Instance.RemoveListener(EventName.BeginAdjustingARScene, BeginAdjusting);
             EventManager.Instance.RemoveListener(EventName.StartGame, StartGame);
+            EventManager.Instance.RemoveListener(EventName.RestartGame, BeginPlacing);
+            EventManager.Instance.RemoveListener(EventName.WinGame, StopRayCasting);
+            EventManager.Instance.RemoveListener(EventName.LoseGame, StopRayCasting);
         }
 
         void ScreenTapped(InputAction.CallbackContext context)
@@ -137,6 +143,12 @@ namespace Assets.Scripts.ScriptableObject
             canRayCastScene = true;
         }
 
+
+        void StopRayCasting()
+        {
+            canRayCastAR = false;
+            canRayCastScene = false;
+        }
         /// <summary>
         /// Automatically initialize serialized fields when component is first added.
         /// </summary>
