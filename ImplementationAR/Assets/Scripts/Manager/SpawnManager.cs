@@ -53,12 +53,22 @@ namespace Assets.Scripts
 
             if (m_RaycastHitEvent != null)
                 m_RaycastHitEvent.eventRaised += PlaceObjectAt;
+            EventManager.Instance.AddListener(EventName.RestartGame, DestroyRoom);
         }
 
         void OnDisable()
         {
             if (m_RaycastHitEvent != null)
                 m_RaycastHitEvent.eventRaised -= PlaceObjectAt;
+            EventManager.Instance.RemoveListener(EventName.RestartGame, DestroyRoom);
+        }
+
+        void DestroyRoom()
+        {
+            if (m_SpawnedObject != null)
+            {
+                Destroy(m_SpawnedObject);
+            }
         }
 
         void PlaceObjectAt(object sender, ARRaycastHit hitPose)

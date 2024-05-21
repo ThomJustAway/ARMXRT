@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using Unity.XR.CoreUtils;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
 
@@ -36,6 +38,15 @@ namespace Assets.Scripts.ScriptableObject
         [SerializeField]
         [Tooltip("The type of trackable the raycast will hit.")]
         TrackableType m_TrackableType = TrackableType.PlaneWithinPolygon;
+
+        [SerializeField]
+        GraphicRaycaster m_Raycaster;
+        [SerializeField]
+        EventSystem m_EventSystem;
+        PointerEventData m_PointerEventData;
+        List<RaycastResult> UIRayCastResult;
+
+
         public bool canRayCastAR = true;
         public bool canRayCastScene = true;
 
@@ -98,9 +109,24 @@ namespace Assets.Scripts.ScriptableObject
             }
             var tapPosition = pointer.position.ReadValue();
 
+            if (CheckIfHitUI(tapPosition)) return;
             RayCastScene(tapPosition);
             RaycastAR(tapPosition);
 
+
+            bool CheckIfHitUI(Vector2 tapPosition)
+            {
+                UIRayCastResult = new();
+                m_PointerEventData = new PointerEventData(m_EventSystem);
+                //Set the Pointer Event Position to that of the mouse position
+                m_PointerEventData.position = tapPosition;
+                m_Raycaster.Raycast(m_PointerEventData, UIRayCastResult);
+
+
+                if (UIRayCastResult.Count > 0) return true;
+                return false;
+
+            }
             void RaycastAR(Vector2 tapPosition)
             {
                 if (!canRayCastAR) return;

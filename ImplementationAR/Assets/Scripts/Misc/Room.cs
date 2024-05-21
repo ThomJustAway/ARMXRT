@@ -8,7 +8,7 @@ public class Room : MonoBehaviour
 {
     [SerializeField] ARRotationInteractable rotationInteration;
     [SerializeField] ARScaleInteractable scaleInteractable;
-
+    [SerializeField] Collider collider;
 
     private void OnEnable()
     {
@@ -28,17 +28,20 @@ public class Room : MonoBehaviour
     {
         rotationInteration.enabled = false;
         scaleInteractable.enabled = false;
+        collider.enabled = true;
     }
 
     void OnBeginAdjusting()
     {
         rotationInteration.enabled = true;
         scaleInteractable.enabled = true;
+        collider.enabled = true;
     }
 
     void OnStartGame()
     {
         rotationInteration.enabled = false;
         scaleInteractable.enabled = false;
+        collider.enabled = false;
     }
 }

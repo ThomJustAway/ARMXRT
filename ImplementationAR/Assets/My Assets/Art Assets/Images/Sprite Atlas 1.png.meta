@@ -417,7 +417,7 @@ TextureImporter:
         width: 137
         height: 137
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -425,6 +425,69 @@ TextureImporter:
       bones: []
       spriteID: 083ecb6d9c4b70c449cfd1f39411ab42
       internalID: 630442724
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Inventory panel
+      rect:
+        serializedVersion: 2
+        x: 1019
+        y: 825
+        width: 419
+        height: 1888
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a34923c26e31cb440880f57e1f917a8b
+      internalID: -47293371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Selected inventory slot
+      rect:
+        serializedVersion: 2
+        x: 1018
+        y: 519
+        width: 204
+        height: 204
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 59eeac800238dbf46bc3c4c97d50aefe
+      internalID: 367401112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Unselected inventory slot
+      rect:
+        serializedVersion: 2
+        x: 1232
+        y: 519
+        width: 204
+        height: 204
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 063f0131303237e479b75a0534d90ebd
+      internalID: -685659373
       vertices: []
       indices: 
       edges: []
@@ -445,14 +508,17 @@ TextureImporter:
       Button press: 20312932
       Icon: 2100168327
       Information icon: 918147970
+      Inventory panel: -47293371
       Panel: -1639749633
       Pause menu: 630442724
       Question Mark: -257315937
       Restart: -2046387538
+      Selected inventory slot: 367401112
       Settings: 1380469328
       Small button: 194323580
       Square button: 1253947904
       Square button press: 1427057067
+      Unselected inventory slot: -685659373
       small button press: 136411108
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
