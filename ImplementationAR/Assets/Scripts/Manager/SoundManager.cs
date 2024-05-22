@@ -86,7 +86,6 @@ namespace Assets.Scripts.Manager
                 elpseTime += Time.deltaTime;
                 yield return null;
             }
-            print("completely set the ambience music");
             ambientAudioSource.volume = clip.volume;
         }
 

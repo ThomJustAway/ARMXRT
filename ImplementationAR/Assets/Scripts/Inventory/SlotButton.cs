@@ -35,7 +35,6 @@ public class SlotButton : CustomButton
 
     void CheckButton(int index)
     {
-        print($"this is {name} recieving index {index}");
         if(this.index != index)
         {
             buttonImage.sprite = inventory.UnSelectedImageButton;
@@ -55,6 +54,7 @@ public class SlotButton : CustomButton
     {
         itemImage.enabled = true; //dont show the item
         itemImage.sprite = item.Image;
+        itemImage.preserveAspect = true;
         itemAssign = item;
     }
 

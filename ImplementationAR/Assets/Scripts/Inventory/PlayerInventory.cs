@@ -2,6 +2,7 @@ using Patterns;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerInventory : Singleton<PlayerInventory>
@@ -16,6 +17,7 @@ public class PlayerInventory : Singleton<PlayerInventory>
     
     [SerializeField] Sprite selectedImageButton;
     [SerializeField] Sprite unSelectedImageButton;
+    [SerializeField] Animator animator;
     public delegate void OnClick(int index);
     public OnClick onclickEvent;
     public Sprite  SelectedImageButton { get => selectedImageButton; set => selectedImageButton = value; }
@@ -38,10 +40,25 @@ public class PlayerInventory : Singleton<PlayerInventory>
         onclickEvent.Invoke(curSelectedIndex);
     }
 
+    private void OnEnable()
+    {
+        EventManager.Instance.AddListener(EventName.RestartGame, ResetInventory);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.Instance.AddListener(EventName.RestartGame, ResetInventory);
+    }
+
     void ChangeSelection(int index)
     {
         curSelectedIndex = index;
-        print($"Selected is {index}");
+    }
+
+    public void AddItem(Holdable item)
+    {
+        var btn = buttons.Where(item => !item.HasItem).First();
+        btn.AssignItem(item);
     }
 
     public bool TryGetHoldableFromSelected(out SlotButton btn)
@@ -54,4 +71,18 @@ public class PlayerInventory : Singleton<PlayerInventory>
         return false;
     }
 
+    public void ToggleInventory()
+    {
+        bool state = animator.GetBool("Open");
+        animator.SetBool("Open", !state);
+    }
+
+    private void ResetInventory()
+    {
+        foreach(var item in buttons)
+        {
+            //dont show it anymore
+            item.UseItem();
+        }
+    }
 }

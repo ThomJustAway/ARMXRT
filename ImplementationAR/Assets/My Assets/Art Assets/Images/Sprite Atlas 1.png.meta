@@ -438,7 +438,7 @@ TextureImporter:
         width: 419
         height: 1888
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -459,7 +459,7 @@ TextureImporter:
         width: 204
         height: 204
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -480,7 +480,7 @@ TextureImporter:
         width: 204
         height: 204
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -488,6 +488,69 @@ TextureImporter:
       bones: []
       spriteID: 063f0131303237e479b75a0534d90ebd
       internalID: -685659373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Side Panel
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 544
+        width: 117
+        height: 589
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d1324394d11e7f94ca0228c400bb7333
+      internalID: 1844805336
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Arrow btn
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 1222
+        width: 63
+        height: 109
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 725c5f487edf7924fbf13beb879f29a8
+      internalID: -47763505
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Key
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 1027
+        width: 78
+        height: 154
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 3, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6a6ef14bc6bcdac40994335f9491f66a
+      internalID: -1442151093
       vertices: []
       indices: 
       edges: []
@@ -503,18 +566,21 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      Arrow btn: -47763505
       Back icon: -2007684519
       Button: 606452042
       Button press: 20312932
       Icon: 2100168327
       Information icon: 918147970
       Inventory panel: -47293371
+      Key: -1442151093
       Panel: -1639749633
       Pause menu: 630442724
       Question Mark: -257315937
       Restart: -2046387538
       Selected inventory slot: 367401112
       Settings: 1380469328
+      Side Panel: 1844805336
       Small button: 194323580
       Square button: 1253947904
       Square button press: 1427057067

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Patterns;
+using System.Collections;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -18,6 +19,7 @@ namespace Assets.Scripts
             if(isOpen)
             {
                 animator.SetBool("Open", true);
+                EventManager.Instance.TriggerEvent(EventName.WinGame);
             }
             else
             {
