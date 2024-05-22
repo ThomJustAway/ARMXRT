@@ -1,4 +1,5 @@
-﻿using Patterns;
+﻿using Assets.Scripts.Manager;
+using Patterns;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -14,6 +15,28 @@ namespace Assets.Scripts
         private void Start()
         {
             StartPlacing();
+        }
+
+        private void OnEnable()
+        {
+            EventManager.Instance.AddListener(EventName.WinGame, PlayWinMusic);
+            EventManager.Instance.AddListener(EventName.LoseGame, PlayLoseMusic);
+        }
+
+        private void OnDisable()
+        {
+            EventManager.Instance.RemoveListener(EventName.WinGame, PlayWinMusic);
+            EventManager.Instance.RemoveListener(EventName.LoseGame, PlayLoseMusic);
+        }
+
+        private void PlayWinMusic()
+        {
+            SoundManager.Instance.PlayAudio(SFXClip.WinSound);
+        }
+
+        private void PlayLoseMusic()
+        {
+            SoundManager.Instance.PlayAudio(SFXClip.LoseSound);
         }
 
         public void StartPlacing()

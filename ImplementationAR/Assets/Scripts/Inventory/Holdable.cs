@@ -13,6 +13,7 @@ public class Holdable : MonoBehaviour , IHittable
         PlayerInventory inventory = PlayerInventory.Instance;
         inventory.AddItem(this);
         //show that the gameobject is used.
+        ToolTip.Instance.OpenNewMessage($"You found {name}");
         gameObject.SetActive(false);
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using Patterns;
 
@@ -33,11 +32,11 @@ namespace Assets.Scripts.Manager
 
                 var component = gameObject.AddComponent<AudioSource>(); //create individual audio source for each SFX
 
+                component.playOnAwake = false;
                 component.clip = musicClip.clip;
                 component.volume = musicClip.volume;
                 component.pitch = musicClip.pitch;
                 //set up the audio source vol, pitch and clip so that it is ready to play it.
-
                 musicClip.source = component; //put it back into the music clip so that it can be called
                 musicClips[i] = musicClip;
             }
@@ -68,6 +67,18 @@ namespace Assets.Scripts.Manager
                 }
             }
             Debug.LogError("no clips");
+        }
+
+        [ContextMenu("play win sound")]
+        public void PlayWinSound()
+        {
+            PlayAudio(SFXClip.WinSound);
+        }
+
+        [ContextMenu("play lose sound")]
+        public void PlayLoseSound()
+        {
+            PlayAudio(SFXClip.LoseSound);
         }
 
         private IEnumerator WindUpMusic(AmbientMusicClip clip, float time)
@@ -123,6 +134,6 @@ namespace Assets.Scripts.Manager
             Debug.LogError("no clips");
         }
 
-
+        
     }
 }

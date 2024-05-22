@@ -1,3 +1,4 @@
+using Assets.Scripts.Manager;
 using Patterns;
 using System.Collections;
 using System.Collections.Generic;
@@ -58,6 +59,7 @@ public class PlayerInventory : Singleton<PlayerInventory>
     public void AddItem(Holdable item)
     {
         var btn = buttons.Where(item => !item.HasItem).First();
+        SoundManager.Instance.PlayAudio(SFXClip.GotSomethingSFX);
         btn.AssignItem(item);
     }
 

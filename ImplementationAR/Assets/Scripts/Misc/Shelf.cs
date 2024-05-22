@@ -1,3 +1,4 @@
+using Assets.Scripts.Manager;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,7 +12,15 @@ public class Shelf : MonoBehaviour, IHittable
     }
     public void OnHit()
     {
-        bool currentState = m_Animator.GetBool("Open");
-        m_Animator.SetBool("Open", !currentState);
+        bool IsOpen = m_Animator.GetBool("Open");
+        if(IsOpen)
+        {
+            SoundManager.Instance.PlayAudio(SFXClip.ShelfClosing);
+        }
+        else
+        {
+            SoundManager.Instance.PlayAudio(SFXClip.ShelfOpening);
+        }
+        m_Animator.SetBool("Open", !IsOpen);
     }
 }
