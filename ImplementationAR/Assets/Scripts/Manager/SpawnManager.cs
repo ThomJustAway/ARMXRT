@@ -10,6 +10,10 @@ using UnityEngine.XR.ARSubsystems;
 
 namespace Assets.Scripts
 {
+    /// <summary>
+    /// A manager to spawn a gameobject to the scene world. In this
+    /// case it is the 
+    /// </summary>
     [RequireComponent(typeof(ARRaycastManager))]
     public class SpawnManager : MonoBehaviour
     {
@@ -52,12 +56,15 @@ namespace Assets.Scripts
             }
 
             if (m_RaycastHitEvent != null)
+                //subscript the the raycast hit event in Ar to place the gameobject down.
                 m_RaycastHitEvent.eventRaised += PlaceObjectAt;
+            //make sure to destroy the room if the player do decide to restart the game.
             EventManager.Instance.AddListener(EventName.RestartGame, DestroyRoom);
         }
 
         void OnDisable()
         {
+            //subscribe to events to prevent memory leaks.
             if (m_RaycastHitEvent != null)
                 m_RaycastHitEvent.eventRaised -= PlaceObjectAt;
             EventManager.Instance.RemoveListener(EventName.RestartGame, DestroyRoom);
@@ -79,6 +86,7 @@ namespace Assets.Scripts
             }
             EventManager.Instance.TriggerEvent(EventName.FinishPlacing);
 
+            //place the object in the AR scene 
             var forward = hitPose.pose.rotation * Vector3.up;
             var offset = forward * k_PrefabHalfSize;
             m_SpawnedObject.transform.position = hitPose.pose.position + offset;

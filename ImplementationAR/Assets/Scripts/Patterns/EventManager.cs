@@ -239,6 +239,9 @@ namespace Patterns
         RestartGame,
         WinGame,
         LoseGame,
+
+        PauseGame,
+        ResumeGame
     }
 }
 

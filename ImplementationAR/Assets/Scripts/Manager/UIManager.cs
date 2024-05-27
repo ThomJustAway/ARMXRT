@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// A simple script to display UI based on the event.
+/// 
+/// </summary>
 public class UIManager : MonoBehaviour
 {
     [SerializeField] GameObject lockinButton;
@@ -11,8 +15,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject GamePlayPanel;
     [SerializeField] GameObject winPanel;
     [SerializeField] GameObject losePanel;
+    [SerializeField] GameObject pausePanel;
     private void OnEnable()
     {
+        //subscribe to events to display the panels when a certain event is triggered.
         EventManager.Instance.AddListener(EventName.BeginPlacing, OnBeginPlacing);
         EventManager.Instance.AddListener(EventName.FinishPlacing, OnFinishPlacing);    
         EventManager.Instance.AddListener(EventName.BeginAdjustingARScene, OnBeginAdjustingARScene);
@@ -20,10 +26,14 @@ public class UIManager : MonoBehaviour
         EventManager.Instance.AddListener(EventName.RestartGame, OnBeginPlacing);
         EventManager.Instance.AddListener(EventName.WinGame, OnWinGame);
         EventManager.Instance.AddListener(EventName.LoseGame, OnLoseGame);
+        EventManager.Instance.AddListener(EventName.PauseGame, OnPauseGame);
+        EventManager.Instance.AddListener(EventName.ResumeGame, OnResumeGame);
     }
 
     private void OnDisable()
     {
+        //unsubscribe to events 
+
         EventManager.Instance.RemoveListener(EventName.BeginPlacing, OnBeginPlacing);
         EventManager.Instance.RemoveListener(EventName.FinishPlacing, OnFinishPlacing);
         EventManager.Instance.RemoveListener(EventName.BeginAdjustingARScene, OnBeginAdjustingARScene);
@@ -31,6 +41,8 @@ public class UIManager : MonoBehaviour
         EventManager.Instance.RemoveListener(EventName.RestartGame, OnBeginPlacing);
         EventManager.Instance.RemoveListener(EventName.WinGame, OnWinGame);
         EventManager.Instance.RemoveListener(EventName.LoseGame, OnLoseGame);
+        EventManager.Instance.RemoveListener(EventName.PauseGame, OnPauseGame);
+        EventManager.Instance.RemoveListener(EventName.ResumeGame, OnResumeGame);
     }
     void OnFinishPlacing()
     {
@@ -73,5 +85,17 @@ public class UIManager : MonoBehaviour
         PlacingPanel.SetActive(false);
         GamePlayPanel.SetActive(false);
         losePanel.SetActive(true);
+    }
+
+    void OnPauseGame()
+    {
+        GamePlayPanel.SetActive(false);
+        pausePanel.SetActive(true);
+    }
+
+    void OnResumeGame()
+    {
+        GamePlayPanel.SetActive(true);
+        pausePanel.SetActive(false);
     }
 }

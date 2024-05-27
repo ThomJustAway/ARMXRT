@@ -11,31 +11,49 @@ namespace Assets.Scripts.UI_Related
     {
         [SerializeField]TextMeshProUGUI timeText;
         private int timeLeft;
-
+        private bool hasStartedBefore = false;
         private void OnEnable()
         {
             EventManager.Instance.AddListener(EventName.RestartGame, StopTimer);
             EventManager.Instance.AddListener(EventName.WinGame, StopTimer);
+            EventManager.Instance.AddListener(EventName.PauseGame, PauseTimer);
+            EventManager.Instance.AddListener(EventName.ResumeGame, StartTimer);
             StartGame();
+            StartTimer();
         }
 
         private void OnDisable()
         {
-            StopTimer();
             EventManager.Instance.RemoveListener(EventName.RestartGame, StopTimer);
             EventManager.Instance.RemoveListener(EventName.WinGame, StopTimer);
+            EventManager.Instance.RemoveListener(EventName.PauseGame, PauseTimer);
+            EventManager.Instance.RemoveListener(EventName.ResumeGame, StartTimer);
         }
 
         void StartGame()
         {
+            if (hasStartedBefore) return;
+            hasStartedBefore = true;
             timeLeft = GameManager.Instance.AmountOfTime;
+        }
+
+        private void StartTimer()
+        {
             StartCoroutine(TimerCoroutine());
         }
 
         void StopTimer()
         {
+            hasStartedBefore = false;
             StopAllCoroutines();
         }
+
+        void PauseTimer()
+        {
+            StopAllCoroutines();
+        }
+
+
 
         IEnumerator TimerCoroutine()
         {
@@ -63,5 +81,7 @@ namespace Assets.Scripts.UI_Related
             }
             timeText.text = $"{mins}: {secText}";
         }
+
+
     }
 }

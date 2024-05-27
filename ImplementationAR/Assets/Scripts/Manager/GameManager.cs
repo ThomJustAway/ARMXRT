@@ -19,6 +19,7 @@ namespace Assets.Scripts
 
         private void OnEnable()
         {
+            //subscribe to the win and lose event where it would play the win and lose music.z
             EventManager.Instance.AddListener(EventName.WinGame, PlayWinMusic);
             EventManager.Instance.AddListener(EventName.LoseGame, PlayLoseMusic);
         }
@@ -38,7 +39,9 @@ namespace Assets.Scripts
         {
             SoundManager.Instance.PlayAudio(SFXClip.LoseSound);
         }
-
+        //this event trigger is to 
+        //call out event for the other script to recognise.
+        #region event triggers
         public void StartPlacing()
         {
             EventManager.Instance.TriggerEvent(EventName.BeginPlacing);
@@ -49,11 +52,21 @@ namespace Assets.Scripts
             EventManager.Instance.TriggerEvent(EventName.BeginAdjustingARScene);
         }
 
+        public void PauseGame()
+        {
+            EventManager.Instance.TriggerEvent(EventName.PauseGame);
+        }
+
+        public void ResumeGame()
+        {
+            EventManager.Instance.TriggerEvent(EventName.ResumeGame);
+        }
+
         public void StartGame()
         {
             EventManager.Instance.TriggerEvent(EventName.StartGame);
         }
-
+        #endregion
         public void RestartGame()
         {
             EventManager.Instance.TriggerEvent(EventName.RestartGame);

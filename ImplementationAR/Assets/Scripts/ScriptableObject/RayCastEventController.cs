@@ -12,8 +12,14 @@ using UnityEngine.XR.ARSubsystems;
 
 namespace Assets.Scripts.ScriptableObject
 {
+    /// <summary>
+    /// RayCast controller simplify the input recieve from the screen to trigger events
+    /// for other scripts to sense. 
+    /// </summary>
     public class RayCastEventController : MonoBehaviour
     {
+        //Createa a static list to hold hits so that 
+        //The raycast does not have to create a new list every single time.
         static List<ARRaycastHit> s_Hits = new();
         static Ray s_RaycastRay;
 
@@ -39,6 +45,8 @@ namespace Assets.Scripts.ScriptableObject
         [Tooltip("The type of trackable the raycast will hit.")]
         TrackableType m_TrackableType = TrackableType.PlaneWithinPolygon;
 
+        //Sense the ray cast for the UI so that the raycast event controller knows
+        //if the player hits a UI component or not.
         [SerializeField]
         GraphicRaycaster m_Raycaster;
         [SerializeField]
@@ -46,7 +54,9 @@ namespace Assets.Scripts.ScriptableObject
         PointerEventData m_PointerEventData;
         List<RaycastResult> UIRayCastResult;
 
-
+        //able to controll what the raycast can sense
+        //- raycast AR hits the AR plane
+        //- RayCast scene hits the scene plane.
         public bool canRayCastAR = true;
         public bool canRayCastScene = true;
 
@@ -73,8 +83,9 @@ namespace Assets.Scripts.ScriptableObject
             }
 
             if (m_InputActionReferences.ScreenTap.action != null)
+                //subcribe to the screen press
                 m_InputActionReferences.ScreenTap.action.performed += ScreenTapped;
-
+            //subscribe to events to toggle different settings when certain events are being played.
             EventManager.Instance.AddListener(EventName.BeginPlacing, BeginPlacing);
             EventManager.Instance.AddListener(EventName.BeginAdjustingARScene, BeginAdjusting);
             EventManager.Instance.AddListener(EventName.StartGame, StartGame);
@@ -89,9 +100,10 @@ namespace Assets.Scripts.ScriptableObject
                 return;
 
             if (m_InputActionReferences.ScreenTap.action != null)
+                //unsubcribe to the screen press
                 m_InputActionReferences.ScreenTap.action.performed -= ScreenTapped;
 
-
+            //unsubscribe the event to prevent memory leak.
             EventManager.Instance.RemoveListener(EventName.BeginPlacing, BeginPlacing);
             EventManager.Instance.RemoveListener(EventName.BeginAdjustingARScene, BeginAdjusting);
             EventManager.Instance.RemoveListener(EventName.StartGame, StartGame);
@@ -100,6 +112,11 @@ namespace Assets.Scripts.ScriptableObject
             EventManager.Instance.RemoveListener(EventName.LoseGame, StopRayCasting);
         }
 
+        /// <summary>
+        /// When player tap the screen, this will be called out. It would check
+        /// what can or cannot be raycast and will send events accordingly.
+        /// </summary>
+        /// <param name="context">The extra information of the tap input.</param>
         void ScreenTapped(InputAction.CallbackContext context)
         {
             if (context.control.device is not Pointer pointer)
@@ -109,7 +126,7 @@ namespace Assets.Scripts.ScriptableObject
             }
             var tapPosition = pointer.position.ReadValue();
 
-            if (CheckIfHitUI(tapPosition)) return;
+            if (CheckIfHitUI(tapPosition)) return; //if it hits a UI component, ignore it.
             RayCastScene(tapPosition);
             RaycastAR(tapPosition);
 
@@ -132,7 +149,7 @@ namespace Assets.Scripts.ScriptableObject
                 if (!canRayCastAR) return;
                 if (m_ARRaycastHitEvent != null &&
                     m_RaycastManager.Raycast(tapPosition, s_Hits, m_TrackableType))
-                {
+                {//if hits an ar plane, then raise the event to let other listeners know whati is being hit and which position it is.
                     m_ARRaycastHitEvent.Raise(s_Hits[0]);
                 }
             }
@@ -140,9 +157,12 @@ namespace Assets.Scripts.ScriptableObject
             {
                 if (!canRayCastScene) return;
                 Ray raycast = m_Camera.ScreenPointToRay(tapPosition);
+                //get a specific raycast from screen to scene.
                 RaycastHit raycastHit;
                 if (Physics.Raycast(raycast, out raycastHit))
                 {
+                    //calls a Ihittable component which allow gameobject to interact with raycast and callout the specific
+                    //actions that needs to be done.
                     if (raycastHit.collider.gameObject.TryGetComponent<IHittable>(out var component))
                     {
                         component.OnHit();
@@ -150,19 +170,26 @@ namespace Assets.Scripts.ScriptableObject
                 }
             }
         }
-
+        /// <summary>
+        /// Event called when the player starts placing the room
+        /// </summary>
         void BeginPlacing()
         {
             canRayCastAR = true;
             canRayCastScene = false;
         }
-
+        /// <summary>
+        /// Event called when the player rotate and scales the room.
+        /// </summary>
         void BeginAdjusting()
         {
             canRayCastAR = false;
             canRayCastScene = false;
 
         }
+        /// <summary>
+        /// Event called when the player starts the game.
+        /// </summary>
         void StartGame()
         {
             canRayCastAR = false;
